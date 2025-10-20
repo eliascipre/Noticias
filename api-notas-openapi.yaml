@@ -1,0 +1,88 @@
+openapi: 3.0.0
+info:
+  title: API de Notas
+  description: API para consultar notas con filtros de fecha y palabras clave.
+  version: 1.0.0
+
+servers:
+  - url: https://evat.oblek.com.mx/notas-api
+
+paths:
+  /notas:
+    get:
+      summary: Consultar notas
+      description: Obtiene una lista de notas filtradas por palabras clave y opcionalmente por fecha.
+      parameters:
+        - name: palabras
+          in: query
+          required: true
+          description: "Palabras de búsqueda separadas por comas. Permitidas: leyes, ley, comercio exterior, aduanas, aduana, turismo."
+          schema:
+            type: string
+            example: "aduanas,turismo"
+        - name: fechaInicio
+          in: query
+          required: false
+          description: "Fecha de inicio (formato: YYYY-MM-DD)."
+          schema:
+            type: string
+            format: date
+        - name: fechaFin
+          in: query
+          required: false
+          description: "Fecha de fin (formato: YYYY-MM-DD)."
+          schema:
+            type: string
+            format: date
+        - name: limit
+          in: query
+          required: false
+          description: "Número máximo de resultados (default: 50, max: 500)."
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: Una lista de notas.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Identificador único de la nota
+                    titulo:
+                      type: string
+                      description: Título de la nota
+                    contenido:
+                      type: string
+                      description: Contenido completo de la nota
+                    resumen:
+                      type: string
+                      description: Resumen de la nota
+                    fecha:
+                      type: string
+                      format: date
+                      description: Fecha de publicación
+                    fuente:
+                      type: string
+                      description: Fuente de la noticia
+        '400':
+          description: Error en los parámetros de la consulta
+        '401':
+          description: No autorizado - Token de acceso inválido
+        '500':
+          description: Error interno del servidor
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []
