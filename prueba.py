@@ -25,8 +25,8 @@ def save_documents():
     # Parámetros de la consulta
     params = {
         'palabras': 'aduanas, ley, comercio exterior, turismo, aduanas, leyes',
-        'fechaInicio': '2025-10-16',
-        'fechaFin': '2025-10-17',
+        'fechaInicio': '2025-10-19',
+        'fechaFin': '2025-10-20',
         'limit': 500
     }
     
